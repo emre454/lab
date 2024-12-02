@@ -4,13 +4,16 @@ import subprocess
 import os
 import sys
 import re
+
+#mac değiştirmek için fonksiyon
 def mac_degistir(ag, yeni_mac):
     subprocess.call(["ifconfig", ag ,"down"])
     subprocess.call(["ifconfig", ag ,"hw","ether", yeni_mac])
     subprocess.call(["ifconfig", ag ,"up"])
-
+# Komut satırından giriş almak için fonksiyon
 def  girdi():
     parser=optparse.OptionParser()
+     # Komut satırından gelen parametreleri almak için bir fonksiyon tanımlıyoruz
     parser.add_option("-i","--interface",dest="ag", help="Ağ kartı arayüzünü belirtin. "
         "Bu seçenek, MAC adresini değiştirmek istediğiniz ağ kartını seçmek içindir. "
         "Ağ kartınızın ismini yazın, örneğin: 'wlo1', 'enp2s0', 'wlan0'. "
@@ -31,7 +34,7 @@ def  girdi():
 
 
 
-
+# Root yetkileri kontrol eden fonksiyon
 def root():
 
     if os.getuid() != 0:
@@ -41,20 +44,20 @@ def root():
         sys.exit()  
     
 
-
+# MAC adresini okumak için fonksiyon
 def mac_adresoku(ag):
+    # ifconfig komutunu kullanarak ağ arayüzü bilgilerini alıyoruz
     ifconfig = subprocess.check_output(["ifconfig", ag]).decode("utf-8")
-
+    # MAC adresini aramak için düzenli ifade (regex) kullanıyoruz
     mac_adress = re.search(r"\w\w:\w\w:\w\w:\w\w:\w\w:\w\w" ,ifconfig)
 
     if mac_adress:
-
+        # Bulunan MAC adresini döndürüyoruz
         return mac_adress.group(0)
 
 
-        #print("Mac adresiniz başarıyla değişti! (≧▽≦) ",mac_adress.group(0))
-
     else:
+        
         print("Üzgünüm... Seçtiğiniz ağ adaptöründe MAC adresi bulamadık. (╥﹏╥)")
 
 
