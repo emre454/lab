@@ -64,20 +64,12 @@ def mac_adresoku(ag):
 root()
 secenekler = girdi()
 
-macokumak = mac_adresoku(secenekler.ag)
+eski_mac=mac_adresoku(secenekler.ag)
+print(f"Bu ağda kullandığınız {secenekler.ag} arayüzü ile mevcut MAC adresiniz: {eski_mac} (•̀ᴗ•́)و ̑̑")
 
-eski_mac = mac_adresoku(secenekler.ag)
-if eski_mac:
-    print(f"Bu ağda kullandığınız {secenekler.ag} arayüzü ile mevcut MAC adresiniz: {eski_mac} (•̀ᴗ•́)و ̑̑")
-
-    # MAC adresini değiştir
-    mac_degistir(secenekler.ag, secenekler.yeni_mac)
-
-    # Yeni MAC adresini oku
-    yeni_mac = mac_adresoku(secenekler.ag)
-    if yeni_mac:
-        print(f"(*^▽^*)Mac Adresiniz Başarıyla Değişti ,{secenekler.ag} için yeni mac adresiniz -> {yeni_mac}")
-    else:
-        print("（・_・）Yeni MAC adresi okunamadı... Hmm, bu tür küçük sorunlar hiç beklenmezdi, değil mi? (Ya da belki de herkesin başına geliyordur?)")
+mac_degistir(secenekler.ag,secenekler.yeni_mac)
+eski_mac=mac_adresoku(secenekler.ag)
+if eski_mac == secenekler.yeni_mac:
+    print(f"(*^▽^*) MAC adresiniz başarıyla değişti. {secenekler.ag} için yeni MAC adresiniz -> {eski_mac}")
 else:
-    print("（¬_¬）Eski MAC adresi okunamadı... Tuhaf, her şeyin yolunda gitmesi gerekmez miydi? (Sanki biraz daha dikkatli olman gerekirdi...)")
+    print("(・_・)Yeni MAC adresi okunamadı... Hmm, bu tür küçük sorunlar hiç beklenmezdi, değil mi? (Belki de MAC adresiniz doğru formatta girilmemiştir?)")
