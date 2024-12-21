@@ -1,5 +1,3 @@
-# emre454
-
 # MAC Adresi Değiştirme Programı
 
 Bu Python script'i, belirli bir ağ arayüzü için MAC adresini değiştirmek ve mevcut MAC adresini okumak amacıyla kullanılabilir. Aynı zamanda, script'in yönetici (root) yetkileriyle çalışmasını sağlayan bir fonksiyon da içerir.
