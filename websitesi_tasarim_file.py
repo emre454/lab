@@ -126,3 +126,4 @@ if __name__ == '__main__':
 
     # LAN üzerinde herkese açık çalışacak şekilde başlatıyoruz
     app.run(host='0.0.0.0', port=6565)
+
